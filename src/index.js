@@ -122,6 +122,7 @@ export default function (babel) {
   function convertSwitchToIfElse(cases, discriminantIdentifiers) {
     const switchCase = cases[0]
     if (cases.length < 2) {
+      // Default branch.
       if (!switchCase.test) {
         return t.blockStatement(compileConsequents(cases))
       }
@@ -130,6 +131,15 @@ export default function (babel) {
         t.blockStatement(compileConsequents(cases))
       )
     } else {
+      if (!switchCase.test) {
+        // Encountered a default branch somewhere before the last branch.
+        // TODO: Handle with more strictness (perhaps a compile-time error).
+        return t.ifStatement(
+          t.booleanLiteral(true),
+          t.blockStatement(compileConsequents(cases)),
+          convertSwitchToIfElse(cases.slice(1), discriminantIdentifiers)
+        )
+      }
       return t.ifStatement(
         switchCaseToLogicalExpr(switchCase, discriminantIdentifiers),
         t.blockStatement(compileConsequents(cases)),

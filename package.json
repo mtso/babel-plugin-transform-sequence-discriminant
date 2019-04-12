@@ -1,6 +1,6 @@
 {
   "name": "babel-plugin-transform-sequence-discriminants",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "author": "mtso <~@mtso.io>",
   "main": "lib/index.js",
   "license": "MIT",
