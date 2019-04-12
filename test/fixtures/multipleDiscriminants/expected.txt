@@ -1,0 +1,6 @@
+foo-bar
+foo-bar-fallthrough
+default
+x!==y
+a-b
+foo-_
